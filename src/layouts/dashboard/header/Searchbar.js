@@ -6,7 +6,8 @@ import { Input, Slide, Button, IconButton, InputAdornment, ClickAwayListener } f
 import { bgBlur } from '../../../utils/cssStyles';
 // component
 import Iconify from '../../../components/iconify';
-
+// zustand
+import { storeData } from '../../../states/stores';
 // ----------------------------------------------------------------------
 
 const HEADER_MOBILE = 64;
@@ -34,12 +35,17 @@ const StyledSearchbar = styled('div')(({ theme }) => ({
 
 export default function Searchbar() {
   const [open, setOpen] = useState(false);
+  const [search, setSearch] = useState("");
+  const addSearch = storeData(state => state.addSearch);
 
   const handleOpen = () => {
     setOpen(!open);
   };
 
   const handleClose = () => {
+    if(search!==""){
+      addSearch({"search":search})
+    }
     setOpen(false);
   };
 
@@ -59,6 +65,7 @@ export default function Searchbar() {
               fullWidth
               disableUnderline
               placeholder="Search…"
+              onChange={e =>{setSearch(e.target.value)}}
               startAdornment={
                 <InputAdornment position="start">
                   <Iconify icon="eva:search-fill" sx={{ color: 'text.disabled', width: 20, height: 20 }} />

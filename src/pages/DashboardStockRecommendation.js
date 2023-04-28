@@ -14,7 +14,7 @@ import { storeData } from '../states/stores';
 import StockApi from '../services/stock';
 // ----------------------------------------------------------------------
 
-export default function DashboardAppPage() {
+export default function DashboardStockRecommendation() {
   const getSearch = storeData(state => state.search);
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
@@ -41,7 +41,6 @@ export default function DashboardAppPage() {
     if(search!==""){
       StockApi.getStock(search).then(res=>{
         setLoading(false)
-        console.log(res.data)
 
         const keys = Object.keys(res.data.history.Low);
         const lastKey = keys[keys.length - 1];

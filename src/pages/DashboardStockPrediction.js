@@ -13,16 +13,14 @@ import { storeData } from '../states/stores';
 import StockApi from '../services/stock';
 // ----------------------------------------------------------------------
 
-export default function DashboardStockRecommendation() {
+export default function DashboardStockPrediction() {
   const getSearch = storeData(state => state.search);
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
 
-  const [stockDates, setStockDates] = useState({});
-  const [stockSuggestion, setStockSuggestion] = useState("");
-  const [stockEMAL, setStockEMAL] = useState([]);
-  const [stockEMAS, setStockEMAS] = useState([]);
+  const [stockDates, setStockDates] = useState([]);
   const [stockClosingPrice, setStockClosingPrice] = useState([]);
+  const [stockPredictedPrices, setStockPredictedPrices] = useState([]);
   const [currentStock, setCurrentStock] = useState("");
 
   useEffect(() => {
@@ -38,12 +36,10 @@ export default function DashboardStockRecommendation() {
 
   useEffect(() => {
     if (search) {
-      StockApi.getStockRecommendation(search).then(res => {
+      StockApi.getStockPrediction(search).then(res => {
         setStockDates(res.data.dates)
-        setStockSuggestion(res.data.action)
-        setStockEMAS(res.data.ema_short)
-        setStockEMAL(res.data.ema_long)
         setStockClosingPrice(res.data.closing_price)
+        setStockPredictedPrices(res.data.closing_price.concat(res.data.predicted_closing_price))
         setLoading(false)
       }).catch(() => {
         setLoading(true)
@@ -84,72 +80,22 @@ export default function DashboardStockRecommendation() {
               }
             </> :
             <Grid item xs={12} md={6} lg={100}>
-              <Typography sx={{ mb: 5 }}>
-                Se realizo la busqueda y analisis de la accion con el Ticker {search} de la cual {stockSuggestion}
-              </Typography>
-
               <AppWebsiteVisits
                 title={`Accion ${search}`}
-                subheader={stockSuggestion}
+                subheader={"Prediccion de la accion en los proximos 5 dias"}
                 chartLabels={stockDates}
                 chartData={[
+                  {
+                    name: 'Prediccion',
+                    type: 'area',
+                    fill: 'gradient',
+                    data: stockPredictedPrices,
+                  },
                   {
                     name: 'Precio de cierre',
                     type: 'area',
                     fill: 'gradient',
                     data: stockClosingPrice,
-                  },
-                  {
-                    name: 'Media Movil exponencial Larga',
-                    type: 'area',
-                    fill: 'gradient',
-                    data: stockEMAL,
-                  },
-                  {
-                    name: 'Media Movil exponencial Corta',
-                    type: 'area',
-                    fill: 'gradient',
-                    data: stockEMAS,
-                  }
-                ]}
-              />
-
-              <AppWebsiteVisits
-                title={`Accion ${search}`}
-                subheader={"Precio de cierre"}
-                chartLabels={stockDates}
-                chartData={[
-                  {
-                    name: 'Precio de cierre',
-                    type: 'area',
-                    fill: 'gradient',
-                    data: stockClosingPrice,
-                  }
-                ]}
-              />
-              <AppWebsiteVisits
-                title={`Accion ${search}`}
-                chartLabels={stockDates}
-                subheader={"Media Movil exponencial Larga"}
-                chartData={[
-                  {
-                    name: 'Media Movil exponencial Larga',
-                    type: 'area',
-                    fill: 'gradient',
-                    data: stockEMAL,
-                  }
-                ]}
-              />
-              <AppWebsiteVisits
-                title={`Accion ${search}`}
-                subheader={"Media Movil exponencial Corta"}
-                chartLabels={stockDates}
-                chartData={[
-                  {
-                    name: 'Media Movil exponencial Corta',
-                    type: 'area',
-                    fill: 'gradient',
-                    data: stockEMAS,
                   }
                 ]}
               />

@@ -16,10 +16,36 @@ AppWebsiteVisits.propTypes = {
 
 export default function AppWebsiteVisits({ title, subheader, chartLabels, chartData, ...other }) {
   const chartOptions = useChart({
-    plotOptions: { bar: { columnWidth: '16%' } },
-    fill: { type: chartData.map((i) => i.fill) },
+    chart: {
+      zoom: {
+        enabled: true,
+      },
+      pan: {
+        enabled: true,
+      },
+      toolbar: {
+        show: true,
+        tools: {
+          zoomin: true,
+          zoomout: true,
+          reset: true,
+        },
+        offsetX: -10, // adjust the horizontal offset
+        offsetY: -50, // adjust the vertical offset
+      },
+    },
+    plotOptions: {
+      bar: {
+        columnWidth: '16%',
+      },
+    },
+    fill: {
+      type: chartData.map((i) => i.fill),
+    },
     labels: chartLabels,
-    xaxis: { type: 'datetime' },
+    xaxis: {
+      type: 'datetime',
+    },
     yaxis: {
       labels: {
         formatter: function test(val) {
@@ -40,6 +66,7 @@ export default function AppWebsiteVisits({ title, subheader, chartLabels, chartD
       },
     },
   });
+   
 
   return (
     <Card {...other}>

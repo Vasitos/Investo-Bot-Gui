@@ -7,6 +7,8 @@ import LoginPage from './pages/LoginPage';
 import Page404 from './pages/Page404';
 import DashboardAppPage from './pages/DashboardAppPage';
 import DashboardStockRecommendation from './pages/DashboardStockRecommendation';
+import DashboardStockPrediction from './pages/DashboardStockPrediction'
+
 // ----------------------------------------------------------------------
 
 export default function Router() {
@@ -17,8 +19,11 @@ export default function Router() {
       children: [
         { element: <Navigate to="/dashboard/app" />, index: true },
         { element: <Navigate to="/dashboard/recommend" />, index: true },
+        { element: <Navigate to="/dashboard/predict" />, index: true },
         { path: 'app', element: <DashboardAppPage /> },
         { path: 'recommend', element: <DashboardStockRecommendation /> },
+        { path: 'predict', element: <DashboardStockPrediction /> },
+
       ],
     },
     {

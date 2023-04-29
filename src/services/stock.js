@@ -6,7 +6,15 @@ class StockApi {
     }
 
     getStock(stock) {
-        return this.axios.get(`/stock/${stock}/history/`);
+        return this.axios.get(`/stock/${stock}/history`);
+    }
+
+    getStockRecommendation(stock) {
+        return this.axios.get(`/stock/${stock}/suggest`);
+    }
+
+    getStockPrediction(stock) {
+        return this.axios.get(`/predict/${stock}`);
     }
 }
 

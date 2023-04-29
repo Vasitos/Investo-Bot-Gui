@@ -29,20 +29,22 @@ export default function DashboardAppPage() {
   const [closingStock, setClosingStock] = useState(0);
   const [volumeStock, setVolumeStock] = useState(0);
   const [stockDate, setStockDate] = useState("");
+  const [currentStock, setCurrentStock] = useState("");
 
   useEffect(() => {
-    if(getSearch.search){
-      setLoading(true)
-      setSearch(getSearch.search)
+    const currentSearch = getSearch.search;
+    if(currentSearch){
+      if(currentStock !== currentSearch){
+        setCurrentStock(currentSearch);
+        setLoading(true)
+        setSearch(currentSearch)
+      }
     }
   }, [getSearch]);
 
   useEffect(() => {
-    if(search!==""){
+    if(search){
       StockApi.getStock(search).then(res=>{
-        setLoading(false)
-        console.log(res.data)
-
         const keys = Object.keys(res.data.history.Low);
         const lastKey = keys[keys.length - 1];
         setLowStock(res.data.history.Low[lastKey])
@@ -55,8 +57,9 @@ export default function DashboardAppPage() {
         setStockHighInfo(Object.values(res.data.history.High))
         setStockLowInfo(Object.values(res.data.history.Low))
         setStockVolumeInfo(Object.values(res.data.history.Volume))
-
-      }).catch(err => {
+        setLoading(false)
+      }).catch(() => {
+        setLoading(true)
         setSearch("")
       });
     }
@@ -65,7 +68,7 @@ export default function DashboardAppPage() {
   return (
     <>
       <Helmet>
-        <title> Dashboard | Minimal UI </title>
+        <title> Dashboard | InvestoBot </title>
       </Helmet>
 
       <Container maxWidth="xl">

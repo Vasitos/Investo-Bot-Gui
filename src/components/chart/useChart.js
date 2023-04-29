@@ -42,7 +42,19 @@ export default function useChart(options) {
     chart: {
       toolbar: { show: false },
       zoom: { enabled: false },
-       animations: { enabled: true },
+      animations: {
+        enabled: true,
+        easing: 'easeinout',
+        speed: 500,
+        animateGradually: {
+          enabled: true,
+          delay: 150
+        },
+        dynamicAnimation: {
+          enabled: true,
+          speed: 350
+        }
+      },
       foreColor: theme.palette.text.disabled,
       fontFamily: theme.typography.fontFamily,
     },

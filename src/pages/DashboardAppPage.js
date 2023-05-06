@@ -173,6 +173,11 @@ export default function DashboardAppPage() {
                         icon: <MdOutlineSentimentVerySatisfied size={50} />
                       }
                     ]}
+                    fillColorArray={[
+                      '#ff0000',
+                      '#ffc800',
+                      '#16cc20'
+                    ]}
                     initialValue={ratingSentiment}
                     iconsCount={3}
                     readonly

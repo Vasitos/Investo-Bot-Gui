@@ -64,7 +64,7 @@ export default function Searchbar() {
               autoFocus
               fullWidth
               disableUnderline
-              placeholder="Search…"
+              placeholder="Buscar por TICKER"
               onChange={e =>{setSearch(e.target.value)}}
               startAdornment={
                 <InputAdornment position="start">
@@ -74,7 +74,7 @@ export default function Searchbar() {
               sx={{ mr: 1, fontWeight: 'fontWeightBold' }}
             />
             <Button variant="contained" onClick={handleClose}>
-              Search
+              Buscar
             </Button>
           </StyledSearchbar>
         </Slide>

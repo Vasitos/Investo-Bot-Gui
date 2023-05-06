@@ -14,6 +14,8 @@ import Collapse from '@mui/material/Collapse';
 import InboxIcon from '@mui/icons-material/Info';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
+import { Rating } from 'react-simple-star-rating'
+import { MdOutlineSentimentDissatisfied, MdOutlineSentimentNeutral, MdOutlineSentimentVerySatisfied } from "react-icons/md";
 
 // components
 import {
@@ -46,6 +48,7 @@ export default function DashboardAppPage() {
   const [open, setOpen] = useState(false);
   const [openNews, setOpenNews] = useState(false);
   const [news, setNews] = useState([]);
+  const [ratingSentiment, setRatingSentiment] = useState(0);
 
   const handleClick = () => {
     setOpen(!open);
@@ -93,6 +96,15 @@ export default function DashboardAppPage() {
       });
       StockApi.getStockSentiment(search).then(res => {
         setNews(res.data.news);
+        console.log(res.data.emotion)
+        const sentiment = res.data.emotion
+        if(sentiment==="positive"){
+          setRatingSentiment(3)
+        }else if(sentiment==="neutral"){
+          setRatingSentiment(2)
+        }else if(sentiment==="negative"){
+          setRatingSentiment(1)
+        }
       }).catch(() => {
         setLoading(true)
         setSearch("")
@@ -110,9 +122,14 @@ export default function DashboardAppPage() {
       <Container maxWidth="xl">
         {
           stockInformation == null &&
-          <Typography variant="h4" sx={{ mb: 5 }}>
-            Hola, bienvenido a InvestoBot
-          </Typography>
+          <>
+            <Typography variant="h4" sx={{ mb: 5 }}>
+              Hola, bienvenido a InvestoBot
+            </Typography>
+            <Typography variant="h5" sx={{ mb: 5 }}>
+              Recuerde que la busqueda se realiza por medio del simbolo <Link variant="h5" href="https://stockanalysis.com/stocks/" rel="noopener noreferrer" target="_blank">Ticker</Link>
+            </Typography>
+          </>
         }
 
         {
@@ -143,6 +160,23 @@ export default function DashboardAppPage() {
                   <Typography variant="h6" sx={{ mb: 5 }}>
                     {stockInformation.sector}, {stockInformation.industry}
                   </Typography>
+
+                  <Rating
+                    customIcons={[
+                      {
+                        icon: <MdOutlineSentimentDissatisfied size={50} />
+                      },
+                      {
+                        icon: <MdOutlineSentimentNeutral size={50} />
+                      },
+                      {
+                        icon: <MdOutlineSentimentVerySatisfied size={50} />
+                      }
+                    ]}
+                    initialValue={ratingSentiment}
+                    iconsCount={3}
+                    readonly
+                  />
 
                   <List
                     sx={{
@@ -198,7 +232,7 @@ export default function DashboardAppPage() {
                             news.map((item, i) => {
                               return (
                                 <ListItem key={i}>
-                                  <Link variant="h5" href={item.link} rel="noopener noreferrer" target="_blank">{item.title}</Link> 
+                                  <Link variant="h5" href={item.link} rel="noopener noreferrer" target="_blank">{item.title}</Link>
                                 </ListItem>
                               );
                             })

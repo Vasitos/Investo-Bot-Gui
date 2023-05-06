@@ -20,6 +20,10 @@ class StockApi {
     getStockPrediction(stock) {
         return this.axios.get(`/predict/${stock}`);
     }
+
+    getStockSentiment(stock) {
+        return this.axios.get(`/analysis/${stock}/emotions`);
+    }
 }
 
 export default new StockApi();

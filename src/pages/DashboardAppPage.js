@@ -4,7 +4,9 @@ import { Helmet } from 'react-helmet-async';
 // @mui
 import { Grid, Container, Typography, Skeleton, Stack } from '@mui/material';
 
+import Link from '@mui/material/Link'
 import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem'
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
@@ -42,10 +44,17 @@ export default function DashboardAppPage() {
   const [stockDate, setStockDate] = useState("");
   const [currentStock, setCurrentStock] = useState("");
   const [open, setOpen] = useState(false);
+  const [openNews, setOpenNews] = useState(false);
+  const [news, setNews] = useState([]);
 
   const handleClick = () => {
     setOpen(!open);
   };
+
+  const handleClickNews = () => {
+    setOpenNews(!openNews);
+  };
+
   useEffect(() => {
     const currentSearch = getSearch.search;
     if (currentSearch) {
@@ -82,8 +91,13 @@ export default function DashboardAppPage() {
         setLoading(true)
         setSearch("")
       });
+      StockApi.getStockSentiment(search).then(res => {
+        setNews(res.data.news);
+      }).catch(() => {
+        setLoading(true)
+        setSearch("")
+      });
       setLoading(false)
-
     }
   }, [search]);
 
@@ -125,7 +139,7 @@ export default function DashboardAppPage() {
               {
                 stockInformation &&
                 <Typography variant="h4" sx={{ mb: 5 }}>
-                  <a style={{ color: "inherit" }} href={stockInformation.website} >{stockInformation.longName}</a>
+                  <a style={{ color: "inherit" }} href={stockInformation.website} rel="noopener noreferrer" target="_blank">{stockInformation.longName}</a>
                   <Typography variant="h6" sx={{ mb: 5 }}>
                     {stockInformation.sector}, {stockInformation.industry}
                   </Typography>
@@ -155,6 +169,41 @@ export default function DashboardAppPage() {
                             {stockInformation.longBusinessSummary}
                           </Typography>
                         </ListItemButton>
+                      </List>
+                    </Collapse>
+                  </List>
+
+                  <List
+                    sx={{
+                      width: '100%',
+                      maxWidth: '100%',
+                      bgcolor: 'background.paper',
+                      backgroundColor: 'transparent', // make it transparent
+                      borderRadius: '10px' // add border radius to make it rounded
+                    }}
+                    component="nav"
+                    aria-labelledby="nested-list-subheader"
+                  >
+                    <ListItemButton onClick={handleClickNews}>
+                      <ListItemIcon>
+                        <InboxIcon />
+                      </ListItemIcon>
+                      <ListItemText primary="Noticias" />
+                      {openNews ? <ExpandLess /> : <ExpandMore />}
+                    </ListItemButton>
+                    <Collapse in={openNews} timeout="auto" unmountOnExit>
+                      <List component="div" disablePadding>
+                        <List>
+                          {
+                            news.map((item, i) => {
+                              return (
+                                <ListItem key={i}>
+                                  <Link variant="h5" href={item.link} rel="noopener noreferrer" target="_blank">{item.title}</Link> 
+                                </ListItem>
+                              );
+                            })
+                          }
+                        </List>
                       </List>
                     </Collapse>
                   </List>

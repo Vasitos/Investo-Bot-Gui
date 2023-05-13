@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, forwardRef } from 'react';
 
 import { Helmet } from 'react-helmet-async';
 // @mui
@@ -16,7 +16,8 @@ import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import { Rating } from 'react-simple-star-rating'
 import { MdOutlineSentimentDissatisfied, MdOutlineSentimentNeutral, MdOutlineSentimentVerySatisfied } from "react-icons/md";
-
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
 // components
 import {
   AppWebsiteVisits,
@@ -30,9 +31,10 @@ import StockApi from '../services/stock';
 
 export default function DashboardAppPage() {
   const getSearch = storeData(state => state.search);
+  const vertical = "top";
+  const horizontal = "center";
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
-
   const [stockDatesInfo, setStockDatesInfo] = useState({});
   const [stockClosingInfo, setStockClosingInfo] = useState({});
   const [stockHighInfo, setStockHighInfo] = useState({});
@@ -49,9 +51,23 @@ export default function DashboardAppPage() {
   const [openNews, setOpenNews] = useState(false);
   const [news, setNews] = useState([]);
   const [ratingSentiment, setRatingSentiment] = useState(0);
+  const [openAlert, setOpenAlert] = useState(false);
+  const [responseStatus, setResponseStatus] = useState({});
+
+  const Alert = forwardRef((props, ref) => (
+    <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />
+  ));
 
   const handleClick = () => {
     setOpen(!open);
+  };
+
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpenAlert(false);
   };
 
   const handleClickNews = () => {
@@ -98,18 +114,22 @@ export default function DashboardAppPage() {
         setNews(res.data.news);
         console.log(res.data.emotion)
         const sentiment = res.data.emotion
-        if(sentiment==="positive"){
+        if (sentiment === "positive") {
           setRatingSentiment(3)
-        }else if(sentiment==="neutral"){
+        } else if (sentiment === "neutral") {
           setRatingSentiment(2)
-        }else if(sentiment==="negative"){
+        } else if (sentiment === "negative") {
           setRatingSentiment(1)
         }
       }).catch(() => {
         setLoading(true)
         setSearch("")
+        setResponseStatus({message:"Ocurrio algo al buscar la accion, intentelo nuevamente",severity:"error"})
+        setOpenAlert(true);
       });
       setLoading(false)
+      setResponseStatus({message:"Informacion obtenida de forma exitosa",severity:"success"})
+      setOpenAlert(true);
     }
   }, [search]);
 
@@ -118,6 +138,12 @@ export default function DashboardAppPage() {
       <Helmet>
         <title> Dashboard | InvestoBot </title>
       </Helmet>
+
+      <Snackbar open={openAlert} autoHideDuration={4000} onClose={handleClose} anchorOrigin={{ vertical, horizontal }}>
+        <Alert onClose={handleClose} severity={responseStatus.severity} sx={{ width: '100%' }}>
+          {responseStatus.message}
+        </Alert>
+      </Snackbar>
 
       <Container maxWidth="xl">
         {

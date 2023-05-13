@@ -1,8 +1,9 @@
-import { useEffect, useState } from 'react';
-
+import { useEffect, useState, forwardRef } from 'react';
 import { Helmet } from 'react-helmet-async';
 // @mui
 import { Grid, Container, Typography, Skeleton, Stack } from '@mui/material';
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
 // components
 import {
   AppWebsiteVisits,
@@ -15,15 +16,18 @@ import StockApi from '../services/stock';
 
 export default function DashboardStockRecommendation() {
   const getSearch = storeData(state => state.search);
+  const vertical = "top";
+  const horizontal = "center";
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
-
   const [stockDates, setStockDates] = useState({});
   const [stockSuggestion, setStockSuggestion] = useState("");
   const [stockEMAL, setStockEMAL] = useState([]);
   const [stockEMAS, setStockEMAS] = useState([]);
   const [stockClosingPrice, setStockClosingPrice] = useState([]);
   const [currentStock, setCurrentStock] = useState("");
+  const [openAlert, setOpenAlert] = useState(false);
+  const [responseStatus, setResponseStatus] = useState({});
 
   useEffect(() => {
     const currentSearch = getSearch.search;
@@ -45,18 +49,39 @@ export default function DashboardStockRecommendation() {
         setStockEMAL(res.data.ema_long)
         setStockClosingPrice(res.data.closing_price)
         setLoading(false)
+        setResponseStatus({message:res.data.action,severity:"info",time:6000})
+        setOpenAlert(true)
       }).catch(() => {
         setLoading(true)
         setSearch("")
+        setResponseStatus({message:"Ocurrio algo al buscar la accion, intentelo nuevamente",severity:"error",time:4000})
+        setOpenAlert(true);
       });
     }
   }, [search]);
 
+  const Alert = forwardRef((props, ref) => (
+    <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />
+  ));
+
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpenAlert(false);
+  };
   return (
     <>
       <Helmet>
         <title> Dashboard | InvestoBot </title>
       </Helmet>
+
+      <Snackbar open={openAlert} autoHideDuration={responseStatus.time} onClose={handleClose} anchorOrigin={{ vertical, horizontal }}>
+        <Alert onClose={handleClose} severity={responseStatus.severity} sx={{ width: '100%' }}>
+          {responseStatus.message}
+        </Alert>
+      </Snackbar>
 
       <Container maxWidth="xl">
         <Typography variant="h4" sx={{ mb: 5 }}>

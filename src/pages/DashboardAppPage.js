@@ -124,11 +124,11 @@ export default function DashboardAppPage() {
       }).catch(() => {
         setLoading(true)
         setSearch("")
-        setResponseStatus({message:"Ocurrio algo al buscar la accion, intentelo nuevamente",severity:"error"})
+        setResponseStatus({message:"Ocurrió algo al buscar la acción, inténtelo nuevamente",severity:"error"})
         setOpenAlert(true);
       });
       setLoading(false)
-      setResponseStatus({message:"Informacion obtenida de forma exitosa",severity:"success"})
+      setResponseStatus({message:"Información obtenida de forma exitosa",severity:"success"})
       setOpenAlert(true);
     }
   }, [search]);
@@ -153,7 +153,7 @@ export default function DashboardAppPage() {
               Hola, bienvenido a InvestoBot
             </Typography>
             <Typography variant="h5" sx={{ mb: 5 }}>
-              Recuerde que la busqueda se realiza por medio del simbolo <Link variant="h5" href="https://stockanalysis.com/stocks/" rel="noopener noreferrer" target="_blank">Ticker</Link>
+              Recuerde que la búsqueda se realiza por medio del símbolo <Link variant="h5" href="https://stockanalysis.com/stocks/" rel="noopener noreferrer" target="_blank">Ticker</Link>
             </Typography>
           </>
         }
@@ -183,10 +183,13 @@ export default function DashboardAppPage() {
                 stockInformation &&
                 <Typography variant="h4" sx={{ mb: 5 }}>
                   <a style={{ color: "inherit" }} href={stockInformation.website} rel="noopener noreferrer" target="_blank">{stockInformation.longName}</a>
-                  <Typography variant="h6" sx={{ mb: 5 }}>
+                  <Typography variant="h6" sx={{ mb: 2 }}>
                     {stockInformation.sector}, {stockInformation.industry}
                   </Typography>
 
+                  <Typography variant="h6">
+                    Reputación del publico
+                  </Typography>
                   <Rating
                     customIcons={[
                       {
@@ -206,6 +209,7 @@ export default function DashboardAppPage() {
                     ]}
                     initialValue={ratingSentiment}
                     iconsCount={3}
+                    titleSeparator="de"
                     readonly
                   />
 
@@ -224,7 +228,7 @@ export default function DashboardAppPage() {
                       <ListItemIcon>
                         <InboxIcon />
                       </ListItemIcon>
-                      <ListItemText primary="Informacion basica" />
+                      <ListItemText primary="Información basica" />
                       {open ? <ExpandLess /> : <ExpandMore />}
                     </ListItemButton>
                     <Collapse in={open} timeout="auto" unmountOnExit>
@@ -276,11 +280,11 @@ export default function DashboardAppPage() {
               }
               <Grid container spacing={3}>
                 <Grid item xs={12} sm={6} md={3}>
-                  <AppWidgetSummary title={`Precio mas bajo ${stockDate}`} total={lowStock} icon={'fluent-mdl2:stock-down'} />
+                  <AppWidgetSummary title={`Precio más bajo ${stockDate}`} total={lowStock} icon={'fluent-mdl2:stock-down'} />
                 </Grid>
 
                 <Grid item xs={12} sm={6} md={3}>
-                  <AppWidgetSummary title={`Precio mas alto ${stockDate}`} total={highStock} color="info" icon={'fluent-mdl2:stock-up'} />
+                  <AppWidgetSummary title={`Precio más alto ${stockDate}`} total={highStock} color="info" icon={'fluent-mdl2:stock-up'} />
                 </Grid>
 
                 <Grid item xs={12} sm={6} md={3}>
@@ -288,13 +292,13 @@ export default function DashboardAppPage() {
                 </Grid>
 
                 <Grid item xs={12} sm={6} md={3}>
-                  <AppWidgetSummary title={`Volumen de la accion ${stockDate}`} total={volumeStock} color="error" icon={'ant-design:stock-outlined'} />
+                  <AppWidgetSummary title={`Volumen de la acción ${stockDate}`} total={volumeStock} color="error" icon={'ant-design:stock-outlined'} />
                 </Grid>
 
                 <Grid item xs={12} md={6} lg={100}>
                   <AppWebsiteVisits
                     title="Precio de cierre"
-                    subheader={`Accion ${search}`}
+                    subheader={`Acción ${search}`}
                     chartLabels={stockDatesInfo}
                     chartData={[
                       {
@@ -309,8 +313,8 @@ export default function DashboardAppPage() {
 
                 <Grid item xs={12} md={6} lg={100}>
                   <AppWebsiteVisits
-                    title="Volumen de la accion"
-                    subheader={`Accion ${search}`}
+                    title="Volumen de la acción"
+                    subheader={`Acción ${search}`}
                     chartLabels={stockDatesInfo}
                     chartData={[
                       {
@@ -325,18 +329,18 @@ export default function DashboardAppPage() {
 
                 <Grid item xs={12} md={6} lg={100}>
                   <AppWebsiteVisits
-                    title="Accion mas baja y alta"
+                    title="Acción más baja y alta"
                     subheader={`Accion ${search}`}
                     chartLabels={stockDatesInfo}
                     chartData={[
                       {
-                        name: 'Accion mas baja',
+                        name: 'Acción más baja',
                         type: 'area',
                         fill: 'gradient',
                         data: stockLowInfo,
                       },
                       {
-                        name: 'Accion mas Alta',
+                        name: 'Acción más alta',
                         type: 'area',
                         fill: 'gradient',
                         data: stockHighInfo,

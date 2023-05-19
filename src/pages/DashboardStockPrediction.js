@@ -85,7 +85,7 @@ export default function DashboardStockPrediction() {
 
       <Container maxWidth="xl">
         <Typography variant="h4" sx={{ mb: 5 }}>
-          Hola, bienvenido a InvestoBot, Escribe el Ticker de la accion para darte una recomendacion
+          Hola, bienvenido a InvestoBot, Escribe el Ticker de la acción para darte una recomendación
         </Typography>
 
         {
@@ -111,11 +111,11 @@ export default function DashboardStockPrediction() {
             <Grid item xs={12} md={6} lg={100}>
               <AppWebsiteVisits
                 title={`Accion ${search}`}
-                subheader={"Prediccion de la accion en los proximos 5 dias"}
+                subheader={"Predicción de la acción en los próximos 5 días"}
                 chartLabels={stockDates}
                 chartData={[
                   {
-                    name: 'Prediccion',
+                    name: 'Predicción',
                     type: 'area',
                     fill: 'gradient',
                     data: stockPredictedPrices,

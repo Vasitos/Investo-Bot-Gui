@@ -54,7 +54,7 @@ export default function DashboardStockRecommendation() {
       }).catch(() => {
         setLoading(true)
         setSearch("")
-        setResponseStatus({message:"Ocurrio algo al buscar la accion, intentelo nuevamente",severity:"error",time:4000})
+        setResponseStatus({message:"Ocurrió algo al buscar la acción, inténtelo nuevamente",severity:"error",time:4000})
         setOpenAlert(true);
       });
     }
@@ -85,7 +85,7 @@ export default function DashboardStockRecommendation() {
 
       <Container maxWidth="xl">
         <Typography variant="h4" sx={{ mb: 5 }}>
-          Hola, bienvenido a InvestoBot, Escribe el Ticker de la accion para darte una recomendacion
+          Hola, bienvenido a InvestoBot, Escribe el Ticker de la acción para darte una recomendación
         </Typography>
 
         {
@@ -110,11 +110,11 @@ export default function DashboardStockRecommendation() {
             </> :
             <Grid item xs={12} md={6} lg={100}>
               <Typography sx={{ mb: 5 }}>
-                Se realizo la busqueda y analisis de la accion con el Ticker {search} de la cual {stockSuggestion}
+                Se realizo la búsqueda y análisis de la acción con el Ticker {search} de la cual {stockSuggestion}
               </Typography>
 
               <AppWebsiteVisits
-                title={`Accion ${search}`}
+                title={`Acción ${search}`}
                 subheader={stockSuggestion}
                 chartLabels={stockDates}
                 chartData={[
@@ -125,13 +125,13 @@ export default function DashboardStockRecommendation() {
                     data: stockClosingPrice,
                   },
                   {
-                    name: 'Media Movil exponencial Larga',
+                    name: 'Media Móvil exponencial larga',
                     type: 'area',
                     fill: 'gradient',
                     data: stockEMAL,
                   },
                   {
-                    name: 'Media Movil exponencial Corta',
+                    name: 'Media Móvil exponencial corta',
                     type: 'area',
                     fill: 'gradient',
                     data: stockEMAS,
@@ -140,7 +140,7 @@ export default function DashboardStockRecommendation() {
               />
 
               <AppWebsiteVisits
-                title={`Accion ${search}`}
+                title={`Acción ${search}`}
                 subheader={"Precio de cierre"}
                 chartLabels={stockDates}
                 chartData={[
@@ -153,12 +153,12 @@ export default function DashboardStockRecommendation() {
                 ]}
               />
               <AppWebsiteVisits
-                title={`Accion ${search}`}
+                title={`Acción ${search}`}
                 chartLabels={stockDates}
-                subheader={"Media Movil exponencial Larga"}
+                subheader={"Media Móvil exponencial larga"}
                 chartData={[
                   {
-                    name: 'Media Movil exponencial Larga',
+                    name: 'Media Móvil exponencial larga',
                     type: 'area',
                     fill: 'gradient',
                     data: stockEMAL,
@@ -167,11 +167,11 @@ export default function DashboardStockRecommendation() {
               />
               <AppWebsiteVisits
                 title={`Accion ${search}`}
-                subheader={"Media Movil exponencial Corta"}
+                subheader={"Media Móvil exponencial corta"}
                 chartLabels={stockDates}
                 chartData={[
                   {
-                    name: 'Media Movil exponencial Corta',
+                    name: 'Media Móvil exponencial corta',
                     type: 'area',
                     fill: 'gradient',
                     data: stockEMAS,
